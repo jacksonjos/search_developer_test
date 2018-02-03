@@ -1,0 +1,19 @@
+version: '2.0'
+services:
+  solr:
+    restart: always
+    container_name: solr_app
+    image: solr:7.2
+    volumes:
+      - ./solr_app:/data
+    ports:
+      - 8983:8983
+  app:
+    restart: always
+    container_name: search_api
+    build: ./search_api
+    ports:
+      - 5000:5000
+    volumes:
+      - ./search_api:/sourcecode
+    entrypoint: ["python", "app.py", "runserver"]
