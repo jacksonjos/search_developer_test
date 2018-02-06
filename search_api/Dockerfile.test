@@ -4,9 +4,9 @@ FROM python:3.6
 
 RUN apt-get update
 
-WORKDIR /usr/local/app
+WORKDIR /usr/local/search_api/
 
-COPY app.py tests.py setup.py /usr/local/app/
+COPY search_api/ /usr/local/search_api/
 
 RUN pip install --upgrade pip
 RUN pip install pip-tools
@@ -20,4 +20,4 @@ ENV FLASK_ENV="docker"
 
 EXPOSE 5000
 
-CMD python tests.py
+CMD python search_api/tests.py

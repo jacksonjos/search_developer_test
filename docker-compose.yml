@@ -17,4 +17,4 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - ./search_api:/usr/local/app
+      - ./search_api:/usr/local/search_api/
