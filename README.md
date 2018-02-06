@@ -9,8 +9,8 @@ Este projeto é um teste para a vaga de search developer da Elo7 cujo desafio é
 
 Tendo em vista que se trata de um teste cujo objetivo é de ter um ambiente próximo do estágio de produção desde o início serão adotadas algumas práticas na implementação do exercício:
 
-    1. Segurança: Gerenciamento do código assinando os commits para identificar quem fez o commit ou no uso de autenticação para uso do Solr entre outras coisas
-    2. Estabilidade: Isto envolve não apenas ter um certo cuidado para fixar as versões das aplicações usadas e suas dependências para evitar o uso de software que não foi testado, como também desenvolver as aplicações do exercício de forma que elas estejam sempre funcionando dado que o importante ao usuário é que ele tenha uma experiência fluida e agradável.
+    1. Segurança: Gerenciamento do código assinando os commits para identificar quem fez o commit ou no uso de autenticação para uso do Solr entre outras coisas;
+    2. Estabilidade: Isto envolve não apenas ter um certo cuidado para fixar as versões das aplicações usadas e suas dependências para evitar o uso de software que não foi testado, como também desenvolver as aplicações do exercício de forma que elas estejam sempre funcionando dado que o importante ao usuário é que ele tenha uma experiência fluida e agradável;
     3. Documentação: Documentar não apenas as versões usadas de cada aplicação importante do exercício, mas também informar como executar as aplicações, o que o código (API) faz e a motivação para o uso de cada uma delas.
 
 Também deveria ser adotada a escalabilidade dado que um amebiente de produção precisa estar preparado para lidar com mais de um usuário ao mesmo tempo. Porém, para simplificar a realização do teste não serão habilitados recursos que proporcionem escalabilidade, como criar Solr clusters, dividir o conjunto de dados em mais de uma parte (shards), usar um web server para gerenciar requisições, etc., porque eles adicionam complexidade ao teste e o objetivo é realizar um exercício que resolva o problema de busca e que exiba conhecimentos que proporcionem desenvolver um software que seja alterável e extensível.
@@ -24,28 +24,49 @@ O projeto foi estruturado em uma composição de dois containers Docker, um dele
 
 Como as aplicações fazem uso de dados e necessitam de configurações distintas foi criado um diretório para cada uma delas tal que cada diretório contém os dados, códigos-fonte e documentações relacionados a cada aplicação. Uma estrutura simplificada do projeto pode ser visualizada abaixo.
 
+Além disso, o diretório search_api possui duas Dockerfiles. Uma delas é responsável pela configuração do ambiente de produção da api de busca e a outra pelo ambiente de desenvolvimento, este que para todos os efeitos é usado para desenvolver a aplicação e testá-la, mas ao final do projeto terá a função de ser utilizado para executar os testes de unidade da aplicação.
+
 ```
 search_developer_test
 │   README.md
 │   docker-compose.yml
+│   docker-compose.test.yml
 └───solr_app
 │   │   README.md
 └───search_api
     │   README.md
+    │   Dockerfile
+    │   Dockerfile.test
 ```
 
 
 ## Instruções de build e execução dos containers
 
-Para construir e executar os containers digite os seguintes comandos na linha de comando:
+Há duas possibilidade de execução dos containers da aplicação a ser desenvolvida. Uma delas é executando em ambiente de testes e a outra em ambiente de produção. Os comandos abaixo mostram como construir e executar os containers no ambiente de produção, mas para executar usando o ambiente de testes basta trocar o arquivo YAML (extensão yml).
+
+
+Para construir e iniciar os containers digite os seguintes comandos na linha de comando:
 
 ```
-docker-compose build
-docker-compose up -d
+docker-compose -f docker-compose.yml build
+docker-compose -f docker-compose.yml up -d
 ```
 
 O comando `docker-compose build` é responsável por construir os containers e o comando `docker-compose up -d` inicia (_start_) os containers em background.
 
+Para parar os containers da composição digite na linha de comando:
+
+```
+docker-compose -f docker-compose.yml stop
+```
+
+Para remover parar e remover os conteiners da composição digite na linha de comando:
+
+```
+docker-compose -f docker-compose.yml down -v
+```
+
+O argumento `-v` indica que os volumes usados pelos conteiners da composição serão removidos. Para remover as imagens dos containers deve ser adicionado o parâmetro `--rmi 'all'`.
 <!-- # docker-compose exec app python manage.py recreate_db -->
 
 
@@ -69,3 +90,4 @@ https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet
 https://github.com/docker-solr/docker-solr/tree/afe43e97be7aa764656f3e0aa068bed90f6bdd27  
 http://lucene.apache.org/solr/guide/7_2/  
 https://medium.freecodecamp.org/docker-development-workflow-a-guide-with-flask-and-postgres-db1a1843044a  
+https://github.com/docker-solr/docker-solr/blob/master/Docker-FAQ.md  

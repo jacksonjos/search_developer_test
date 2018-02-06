@@ -6,17 +6,18 @@ RUN apt-get update
 
 WORKDIR /usr/local/app
 
-COPY app.py setup.py /usr/local/app/
+COPY app.py tests.py setup.py /usr/local/app/
 
 RUN pip install --upgrade pip
 RUN pip install pip-tools
 RUN pip-compile > requirements.txt
 
-# argumento -r indica para instalar os módulos e dependências do argumento 'install_requires'
-RUN pip install -r requirements.txt
+# argumento -e é usado para instalar módulos do argumento 'extra_requires' e
+# -r indica para instalar os módulos e dependências do argumento 'install_requires'
+RUN pip install -e .[dev] -r requirements.txt
 
 ENV FLASK_ENV="docker"
 
 EXPOSE 5000
 
-CMD python app.py runserver
+CMD python tests.py

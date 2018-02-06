@@ -18,10 +18,10 @@ setup(name='flask',
       license = "BSD",
       url='http://flask.pocoo.org/',
       python_requires='>=3',
-      install_requires=['Flask==0.12.2',],
+      install_requires=['Flask==0.12.2'],
+
       # para realizar testes
       extras_require={
-        'dev': ['check-manifest'],
-        'test': ['coverage'],
+        'dev': ['Coverage==4.5', 'flask-testing==0.6.2'],
      },
      )
