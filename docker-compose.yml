@@ -3,9 +3,9 @@ services:
   solr:
     restart: always
     container_name: solr_app
-    image: solr:7.2
+    image: solr:7.2-alpine
     volumes:
-      - ./solr_app:/data
+      - ./solr_app/scripts:/docker-entrypoint-initdb.d/
     ports:
       - 8983:8983
   app:
